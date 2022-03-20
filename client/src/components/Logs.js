@@ -95,7 +95,6 @@ class Log extends Component {
   }
 
   generateRows = (rowsData) => {
-    console.log(rowsData);
     let temp = [];
     for (let i = 0; i < rowsData.length; i++) {
       temp.push({
@@ -200,6 +199,29 @@ class Log extends Component {
         else str = "Sun" + str;
         new_arr.push(str);
       }
+      new_arr.sort(function(a, b) {
+        const dayA = a.substring(0,3);
+        const dayB = b.substring(0,3);
+        const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+        const dayA_val = days.findIndex(day => day === dayA);
+        const dayB_val = days.findIndex(day => day === dayB);
+        const timeA = a.substring(3,a.length);
+        const timeB = b.substring(3,b.length);
+        if(dayB_val<dayA_val){
+          return 1;
+        }
+        else if(dayB_val>dayA_val){
+          return -1
+        }
+        else{
+          if(timeA>timeB && timeA.length<timeB.length)
+            return -1;
+          else if(timeA>timeB )
+            return 1;
+          else
+            return -1;
+        }
+      });
       this.setState({
         user_schedule: new_arr,
       });
@@ -377,7 +399,7 @@ class Log extends Component {
                 {this.state.user_schedule?.map(option => {
                   return (
                     <MenuItem  key={option} value={option}>
-                      {option}
+                      {option.substring(0,3)+ " " + option.substring(3,option.length)}
                     </MenuItem>
                   );
                 })}

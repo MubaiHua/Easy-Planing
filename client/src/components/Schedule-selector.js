@@ -81,7 +81,6 @@ export default class Schedule extends React.Component {
     try {
       const config = { headers: { "Content-Type": "application/json" } };
       const body = { email: this.state.email };
-      console.log(body);
       const res = await axios.post("api/calenderRoutes/getUser", body, config);
       this.setState({
         user_schedule: res.data.availabilities,
@@ -171,12 +170,16 @@ export default class Schedule extends React.Component {
         this.state.user_schedule
       );
       await this.getAllEntries();
+      window.location.reload();
+      this.setState({
+        updateMode: !this.state.updateMode,
+      });
     }
-    this.setState({
-      updateMode: !this.state.updateMode,
-      userOnly: !this.state.userOnly,
-    });
-    window.location.reload();
+    else{
+      this.setState({
+        updateMode: !this.state.updateMode,
+      });
+    }
   };
 
   render() {
