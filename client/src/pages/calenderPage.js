@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import NavBar from "../components/AppNavbar";
 import Schedule from "../components/Schedule-selector";
 import Log from "../components/Logs";
-import API from "../utils/API";
+import axios from "axios";
 
 export default class calenderPage extends Component {
   constructor() {
@@ -18,7 +18,7 @@ export default class calenderPage extends Component {
     const token = sessionStorage.getItem("token");
     const config = { headers: { "Content-Type": "application/json" } };
     const body = { token };
-    API.post("api/authRoutes/userCheck", body, config)
+    axios.post("api/authRoutes/userCheck", body, config)
       .then((res) => {
         this.setState({
           user: res.data.user,

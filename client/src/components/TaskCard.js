@@ -4,7 +4,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import API from "../utils/API";
+import axios from "axios";
 
 export default class TaskCard extends React.Component {
   constructor(props) {
@@ -31,7 +31,7 @@ export default class TaskCard extends React.Component {
         state: newState,
         solver: this.state.user,
       };
-      await API.post("api/taskRoutes/updateTask", body, config);
+      await axios.post("api/taskRoutes/updateTask", body, config);
       window.location.reload();
     } catch (err) {
       console.log(err);
@@ -44,7 +44,7 @@ export default class TaskCard extends React.Component {
       const body = {
         id: this.state.id,
       };
-      await API.post("api/taskRoutes/deleteTask", body, config);
+      await axios.post("api/taskRoutes/deleteTask", body, config);
       alert("Delete successful");
       window.location.reload();
     } catch (err) {

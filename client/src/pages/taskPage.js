@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import NavBar from "../components/AppNavbar";
-import API from "../utils/API";
+import axios from 'axios'
 import TaskCard from "../components/TaskCard";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -22,7 +22,7 @@ export default class taskPage extends Component {
     const token = sessionStorage.getItem("token");
     const config = { headers: { "Content-Type": "application/json" } };
     const body = { token };
-    API.post("api/authRoutes/userCheck", body, config)
+    axios.post("api/authRoutes/userCheck", body, config)
       .then((res) => {
         this.setState({
           user: res.data.user,
@@ -33,7 +33,7 @@ export default class taskPage extends Component {
         const config = { headers: { "Content-Type": "application/json" } };
         const body = { solver: this.state.user };
         console.log(body);
-        API.post("api/taskRoutes/getUserTask", body, config)
+        axios.post("api/taskRoutes/getUserTask", body, config)
           .then((res) => {
             let data = res.data.usertask;
             let temp = [];
@@ -55,7 +55,7 @@ export default class taskPage extends Component {
         window.location.href = "log-in";
       });
 
-    API.post("api/taskRoutes/getAllTask")
+    axios.post("api/taskRoutes/getAllTask")
       .then((res) => {
         let data = res.data.allTasks;
         let temp = [];
@@ -89,7 +89,7 @@ export default class taskPage extends Component {
         poster: this.state.user,
         solver: "",
       };
-      await API.post("api/taskRoutes/addTask", body, config);
+      await axios.post("api/taskRoutes/addTask", body, config);
       alert("Successfully posted new task");
       window.location.reload();
     } catch (err) {

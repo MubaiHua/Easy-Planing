@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import API from "../utils/API";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
@@ -47,7 +47,7 @@ const columns = [
         const config = { headers: { "Content-Type": "application/json" } };
         const body = { _id: obj_id };
         try {
-          await API.post(
+          await axios.post(
             "http://localhost:5000/api/logRoutes/deleteLog",
             body,
             config
@@ -113,7 +113,7 @@ class Log extends Component {
 
   getRowsData = () => {
     try {
-      API.post("api/logRoutes/getAllLog").then((res) =>
+      axios.post("api/logRoutes/getAllLog").then((res) =>
         this.generateRows(res.data.allLogs)
       );
     } catch (err) {
@@ -168,7 +168,7 @@ class Log extends Component {
         content: this.state.serachKeyword,
         session: this.state.searchSession,
       };
-      API.post("api/logRoutes/searchLog", body, config).then((res) =>
+      axios.post("api/logRoutes/searchLog", body, config).then((res) =>
         this.generateRows(res.data.logs)
       );
     } catch (err) {
@@ -180,7 +180,7 @@ class Log extends Component {
     try {
       const config = { headers: { "Content-Type": "application/json" } };
       const body = { email: this.state.email };
-      const res = await API.post("api/calenderRoutes/getUser", body, config);
+      const res = await axios.post("api/calenderRoutes/getUser", body, config);
       const resData = res.data.availabilities;
       const new_arr = [];
       for (let i = 0; i < resData.length; i++) {
@@ -217,7 +217,7 @@ class Log extends Component {
     try{
       const config = { headers: { "Content-Type": "application/json" } };
       const body = { username:this.state.username, content:this.state.addContent,  session:this.state.addSession};
-      await API.post("api/logRoutes/addLog",body,config);
+      await axios.post("api/logRoutes/addLog",body,config);
       alert("Add log successful")
     }
     catch (err) {

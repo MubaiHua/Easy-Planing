@@ -1,7 +1,7 @@
 import ScheduleSelector from "react-schedule-selector";
 import React from "react";
 import Dialog from "@mui/material/Dialog";
-import API from "../utils/API";
+import axios from "axios";
 import { DialogContent } from "@mui/material";
 import DialogTitle from "@mui/material/DialogTitle";
 
@@ -29,7 +29,7 @@ export default class Schedule extends React.Component {
 
   getAllEntries = async () => {
     try {
-      const allEntries = await API.post("api/calenderRoutes/getAll");
+      const allEntries = await axios.post("api/calenderRoutes/getAll");
       var allEntryData = allEntries.data.allEntries;
       var new_all_entries = [];
       var newCollection = new Map();
@@ -69,7 +69,7 @@ export default class Schedule extends React.Component {
     try {
       const config = { headers: { "Content-Type": "application/json" } };
       const body = { email, username, availabilities };
-      await API.post("api/calenderRoutes/update", body, config);
+      await axios.post("api/calenderRoutes/update", body, config);
       alert("Update successful");
     } catch (err) {
       console.log(err);
@@ -82,7 +82,7 @@ export default class Schedule extends React.Component {
       const config = { headers: { "Content-Type": "application/json" } };
       const body = { email: this.state.email };
       console.log(body);
-      const res = await API.post("api/calenderRoutes/getUser", body, config);
+      const res = await axios.post("api/calenderRoutes/getUser", body, config);
       this.setState({
         user_schedule: res.data.availabilities,
       });

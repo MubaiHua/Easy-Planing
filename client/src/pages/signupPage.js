@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import NavBar from "../components/WelcomePageNavBar";
-import API from "../utils/API";
+import axios from "axios";
 export default class SignUp extends Component {
   constructor() {
     super();
@@ -41,7 +41,7 @@ export default class SignUp extends Component {
     try {
       const config = { headers: { "Content-Type": "application/json" } };
       const body = { username, password, email };
-      const res = await API.post("api/authRoutes/signup", body, config);
+      const res = await axios.post("api/authRoutes/signup", body, config);
       console.log(res);
       alert("Sign up Successful!");
       window.location.href = "log-in"

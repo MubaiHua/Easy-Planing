@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import NavBar from "../components/WelcomePageNavBar";
-import API from "../utils/API";
+import axios from "axios";
 
 export default class Login extends Component {
   constructor() {
@@ -34,7 +34,7 @@ export default class Login extends Component {
     try {
       const config = { headers: { "Content-Type": "application/json" } };
       const body = { password, email };
-      const res = await API.post("api/authRoutes/login", body, config);
+      const res = await axios.post("api/authRoutes/login", body, config);
       alert("Login Successful!");
       sessionStorage.setItem("token", res.data.token);
       window.location.href = "calender"
