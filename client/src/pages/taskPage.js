@@ -19,21 +19,22 @@ export default class taskPage extends Component {
   }
 
   componentDidMount() {
-    try {
-      const token = sessionStorage.getItem("token");
-      const config = { headers: { "Content-Type": "application/json" } };
-      const body = { token };
-      API.post("api/authRoutes/userCheck", body, config).then((res) => {
+    const token = sessionStorage.getItem("token");
+    const config = { headers: { "Content-Type": "application/json" } };
+    const body = { token };
+    API.post("api/authRoutes/userCheck", body, config)
+      .then((res) => {
         this.setState({
           user: res.data.user,
           email: res.data.email,
           data_recieved: true,
         });
-        try {
-          const config = { headers: { "Content-Type": "application/json" } };
-          const body = { solver: this.state.user };
-          console.log(body);
-          API.post("api/taskRoutes/getUserTask", body, config).then((res) => {
+
+        const config = { headers: { "Content-Type": "application/json" } };
+        const body = { solver: this.state.user };
+        console.log(body);
+        API.post("api/taskRoutes/getUserTask", body, config)
+          .then((res) => {
             let data = res.data.usertask;
             let temp = [];
             for (let i = 0; i < data.length; i++) {
@@ -43,19 +44,19 @@ export default class taskPage extends Component {
             this.setState({
               user_tasks: temp,
             });
+          })
+          .catch((err) => {
+            console.log(err);
           });
-        } catch (err) {
-          console.log(err);
-        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Protected contents");
+        window.location.href = "log-in";
       });
-    } catch (err) {
-      console.log(err);
-      alert("Protected contents");
-      window.location.href = "log-in";
-    }
 
-    try {
-      API.post("api/taskRoutes/getAllTask").then((res) => {
+    API.post("api/taskRoutes/getAllTask")
+      .then((res) => {
         let data = res.data.allTasks;
         let temp = [];
         for (let i = 0; i < data.length; i++) {
@@ -65,10 +66,10 @@ export default class taskPage extends Component {
         this.setState({
           all_tasks: temp,
         });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    } catch (err) {
-      console.log(err);
-    }
   }
 
   handleTaskBox = (event) => {
@@ -133,7 +134,7 @@ export default class taskPage extends Component {
             type="submit"
             sx={{ marginTop: 1, height: 40 }}
             variant="contained"
-            onClick = {this.postNewTask}
+            onClick={this.postNewTask}
           >
             Post
           </Button>

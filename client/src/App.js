@@ -12,7 +12,7 @@ function App() {
       <div className="auth-wrapper">
         <div className="auth-inner">
           <Routes>
-            <Route exact path='/' element={<Login />} />
+            <Route path='/' element={<Login />} />
             <Route path="/log-in" element={<Login />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/calender" element={<CalenderPage />} />

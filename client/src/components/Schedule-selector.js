@@ -176,6 +176,7 @@ export default class Schedule extends React.Component {
       updateMode: !this.state.updateMode,
       userOnly: !this.state.userOnly,
     });
+    window.location.reload();
   };
 
   render() {
