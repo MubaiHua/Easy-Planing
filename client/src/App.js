@@ -6,6 +6,7 @@ import Login from "./pages/loginPage";
 import SignUp from "./pages/signupPage";
 import CalenderPage from "./pages/calenderPage";
 import TaskPage from "./pages/taskPage";
+import PageNotFound from "./pages/404page"
 const App =() => {
   return (
     <Router>
@@ -18,6 +19,7 @@ const App =() => {
               <Route path="/sign-up" exact element={<SignUp />} />
               <Route path="/calender" exact element={<CalenderPage />} />
               <Route path="/task" exact element={<TaskPage />} />
+              <Route path="*" element={<PageNotFound />} />
             </Routes>
           </div>
         </div>

@@ -8,77 +8,30 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { Box, withStyles } from "@material-ui/core";
 
-const columns = [
-  {
-    field: "id",
-    headerName: "No.",
-    width: 60,
-    hide: true,
-    disableColumnMenu: true,
-  },
-  {
-    field: "user",
-    headerName: "User",
-    width: 120,
-    disableColumnMenu: true,
-  },
-  {
-    field: "content",
-    headerName: "Content",
-    width: 400,
-    disableColumnMenu: true,
-  },
-  {
-    field: "session",
-    headerName: "Session",
-    width: 190,
-    disableColumnMenu: true,
-  },
-  {
-    field: "delete",
-    headerName: "Delete",
-    sortable: false,
-    disableColumnMenu: true,
-    width: 120,
-    renderCell(params) {
-      const handleDelete = async () => {
-        const obj_id = params.getValue(params.id, "obj_id");
-        const config = { headers: { "Content-Type": "application/json" } };
-        const body = { _id: obj_id };
-        try {
-          await axios.post(
-            "http://localhost:5000/api/logRoutes/deleteLog",
-            body,
-            config
-          );
-          window.location.reload();
-        } catch (err) {
-          console.log(err);
-        }
-      };
-
-      return (
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          style={{ marginRight: 32, width: 100, height: 40, borderRadius: 5 }}
-          onClick={handleDelete}
-        >
-          Delete
-        </Button>
-      );
+const StyledDataGrid = withStyles({
+  root: {
+    "& .MuiDataGrid-renderingZone": {
+      maxHeight: "none !important",
+    },
+    "& .MuiDataGrid-cell": {
+      lineHeight: "unset !important",
+      maxHeight: "none !important",
+      whiteSpace: "normal",
+    },
+    "& .MuiDataGrid-row": {
+      maxHeight: "none !important",
     },
   },
-  { field: "obj_id", hide: true },
-];
+})(DataGrid);
 
 class Log extends Component {
   constructor(props) {
     super(props);
     this.state = {
       rows: [],
+      columns: [],
       username: props.username,
       email: props.email,
       serachKeyword: "None",
@@ -92,7 +45,93 @@ class Log extends Component {
   componentDidMount() {
     this.getRowsData();
     this.getUserEntires();
+    this.generateColumns();
   }
+
+  getFullName(params) {
+    return params.row.user;
+  }
+
+  generateColumns = async () => {
+    const user = this.state.username;
+    let cols = [
+      {
+        field: "id",
+        headerName: "No.",
+        width: 60,
+        hide: true,
+        disableColumnMenu: true,
+      },
+      {
+        field: "user",
+        headerName: "User",
+        width: 120,
+        disableColumnMenu: true,
+      },
+      {
+        field: "content",
+        headerName: "Content",
+        width: 500,
+        disableColumnMenu: true,
+      },
+      {
+        field: "session",
+        headerName: "Session",
+        width: 100,
+        disableColumnMenu: true,
+      },
+      {
+        field: "delete",
+        headerName: "Delete",
+        sortable: false,
+        disableColumnMenu: true,
+        width: 100,
+        renderCell(params) {
+          const handleDelete = async () => {
+            const obj_id = params.getValue(params.id, "obj_id");
+            const poster = params.getValue(params.id, "user");
+            if (poster !== user) {
+              alert("You can't delete logs posted by others!");
+              return;
+            }
+            const config = { headers: { "Content-Type": "application/json" } };
+            const body = { _id: obj_id };
+            try {
+              await axios.post(
+                "http://localhost:5000/api/logRoutes/deleteLog",
+                body,
+                config
+              );
+              window.location.reload();
+            } catch (err) {
+              console.log(err);
+            }
+          };
+
+          return (
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              style={{
+                marginRight: 32,
+                width: 100,
+                height: 40,
+                borderRadius: 5,
+              }}
+              onClick={handleDelete}
+            >
+              Delete
+            </Button>
+          );
+        },
+      },
+      { field: "obj_id", hide: true },
+    ];
+    this.setState({
+      columns: cols,
+    });
+  };
 
   generateRows = (rowsData) => {
     let temp = [];
@@ -112,9 +151,9 @@ class Log extends Component {
 
   getRowsData = () => {
     try {
-      axios.post("api/logRoutes/getAllLog").then((res) =>
-        this.generateRows(res.data.allLogs)
-      );
+      axios
+        .post("api/logRoutes/getAllLog")
+        .then((res) => this.generateRows(res.data.allLogs));
     } catch (err) {
       console.log(err);
     }
@@ -167,9 +206,9 @@ class Log extends Component {
         content: this.state.serachKeyword,
         session: this.state.searchSession,
       };
-      axios.post("api/logRoutes/searchLog", body, config).then((res) =>
-        this.generateRows(res.data.logs)
-      );
+      axios
+        .post("api/logRoutes/searchLog", body, config)
+        .then((res) => this.generateRows(res.data.logs));
     } catch (err) {
       console.log(err);
     }
@@ -199,27 +238,22 @@ class Log extends Component {
         else str = "Sun" + str;
         new_arr.push(str);
       }
-      new_arr.sort(function(a, b) {
-        const dayA = a.substring(0,3);
-        const dayB = b.substring(0,3);
+      new_arr.sort(function (a, b) {
+        const dayA = a.substring(0, 3);
+        const dayB = b.substring(0, 3);
         const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-        const dayA_val = days.findIndex(day => day === dayA);
-        const dayB_val = days.findIndex(day => day === dayB);
-        const timeA = a.substring(3,a.length);
-        const timeB = b.substring(3,b.length);
-        if(dayB_val<dayA_val){
+        const dayA_val = days.findIndex((day) => day === dayA);
+        const dayB_val = days.findIndex((day) => day === dayB);
+        const timeA = a.substring(3, a.length);
+        const timeB = b.substring(3, b.length);
+        if (dayB_val < dayA_val) {
           return 1;
-        }
-        else if(dayB_val>dayA_val){
-          return -1
-        }
-        else{
-          if(timeA>timeB && timeA.length<timeB.length)
-            return -1;
-          else if(timeA>timeB )
-            return 1;
-          else
-            return -1;
+        } else if (dayB_val > dayA_val) {
+          return -1;
+        } else {
+          if (timeA > timeB && timeA.length < timeB.length) return -1;
+          else if (timeA > timeB) return 1;
+          else return -1;
         }
       });
       this.setState({
@@ -230,23 +264,31 @@ class Log extends Component {
     }
   };
 
-  addLog = async(event)=>{
+  addLog = async (event) => {
     event.preventDefault();
-    if(this.state.addSession === "" || this.state.addContent === ""){
-      alert("You must enter a session or content")
+    if (this.state.addSession === "" || this.state.addContent === "") {
+      alert("You must enter a session or content");
       return;
     }
-    try{
-      const config = { headers: { "Content-Type": "application/json" } };
-      const body = { username:this.state.username, content:this.state.addContent,  session:this.state.addSession};
-      await axios.post("api/logRoutes/addLog",body,config);
-      alert("Add log successful")
+    if (this.state.updateMode === true) {
+      this.setState({
+        updateMode: false,
+      });
     }
-    catch (err) {
+    try {
+      const config = { headers: { "Content-Type": "application/json" } };
+      const body = {
+        username: this.state.username,
+        content: this.state.addContent,
+        session: this.state.addSession,
+      };
+      await axios.post("api/logRoutes/addLog", body, config);
+      alert("Add log successful");
+    } catch (err) {
       console.log(err);
     }
     window.location.reload();
-  }
+  };
 
   render() {
     return (
@@ -254,12 +296,14 @@ class Log extends Component {
         <div className="auth-log">
           <h2>Availability Logs</h2>
           <div style={{ height: 425 }}>
-            <DataGrid
-              rows={this.state.rows}
-              columns={columns}
-              pageSize={6}
-              rowsPerPageOptions={[6]}
-            />
+            <Box height={"450px"}>
+              <StyledDataGrid
+                rows={this.state.rows}
+                columns={this.state.columns}
+                pageSize={6}
+                rowsPerPageOptions={[6]}
+              />
+            </Box>
           </div>
         </div>
         <div className="auth-searchAddLeft">
@@ -396,10 +440,12 @@ class Log extends Component {
                 onChange={this.handleAddSessionChange}
                 label="Day"
               >
-                {this.state.user_schedule?.map(option => {
+                {this.state.user_schedule?.map((option) => {
                   return (
-                    <MenuItem  key={option} value={option}>
-                      {option.substring(0,3)+ " " + option.substring(3,option.length)}
+                    <MenuItem key={option} value={option}>
+                      {option.substring(0, 3) +
+                        " " +
+                        option.substring(3, option.length)}
                     </MenuItem>
                   );
                 })}
@@ -422,3 +468,4 @@ class Log extends Component {
 }
 
 export default Log;
+

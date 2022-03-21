@@ -53,24 +53,31 @@ export default class TaskCard extends React.Component {
   };
 
   render() {
+    var color;
+    if(this.state.state === "finished")
+      color = "green";
+    else if(this.state.state === "ongoing")
+      color = "orange";
+    else
+      color = "red";
     return (
       <div>
         <Card sx={{ minWidth: 275 }}>
           <CardContent>
             <Typography
               sx={{ fontSize: 24 }}
-              color="text.secondary"
+              color="black"
               gutterBottom
             >
               {this.state.task}
             </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
-              {this.state.state}
+            <Typography sx={{ mb: 1.5 }} color= {color}>
+              Status: {this.state.state}
             </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            <Typography sx={{ mb: 1.5 }} color="black">
               Posted by {this.state.poster}
             </Typography>
-            <Typography sx={{ mb: 1.5 }} color="text.secondary">
+            <Typography sx={{ mb: 1.5 }} color="black">
               {this.state.solver !== ""
                 ? "Taken by " + this.state.solver
                 : "No user has taken this task"}
