@@ -6,7 +6,7 @@ import Login from "./pages/loginPage";
 import SignUp from "./pages/signupPage";
 import CalenderPage from "./pages/calenderPage";
 import TaskPage from "./pages/taskPage";
-function App() {
+const App =() => {
   return (
     <Router>
       <div className="App">

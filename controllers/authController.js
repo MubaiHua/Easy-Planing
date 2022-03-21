@@ -44,13 +44,17 @@ exports.login = async (req, res) =>{
     const {password, email} = req.body;
     try{
         const user = await User.findOne({email}).select('+password');
+        if(user === null){
+            res.status(401).json({message: "Login Failed"});
+            return;
+        }
         const compared = await bcrypt.compare(password, user.password);
         compared
         ? sendToken(user, 200, req, res)
-        : res.status(400).json({message: "Login Failed"});
+        : res.status(401).json({message: "Login Failed"});
     } catch (err) {
         console.log(err)
-        res.status(400).json(err.message);
+        res.status(401).json(err.message);
     }
 }
 

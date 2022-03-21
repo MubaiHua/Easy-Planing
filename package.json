@@ -8,7 +8,7 @@
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "client-install": "npm install --prefix client",
+    "client-install": "cd client && npm install",
     "build": "cd client && npm run build",
     "heroku-postbuild": "npm run client-install && npm run build"
   },
@@ -27,5 +27,8 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
+  },
+  "engines": {
+    "node": "14.18.1"
   }
 }
