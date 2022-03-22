@@ -28,8 +28,8 @@ export default class calenderPage extends Component {
       })
       .catch((err) => {
         console.log(err);
-        alert("Protected contents");
-        window.location.href = "log-in";
+        // alert("Protected contents");
+        // window.location.href = "log-in";
       });
   }
 
