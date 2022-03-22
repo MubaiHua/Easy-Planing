@@ -28,9 +28,9 @@ export default class calenderPage extends Component {
       })
       .catch((err) => {
         console.log(err);
-        alert(sessionStorage.getItem("token"));
         // alert("Protected contents");
         // window.location.href = "log-in";
+        alert(err);
       });
   }
 
@@ -40,12 +40,12 @@ export default class calenderPage extends Component {
         <React.StrictMode>
           <div className="auth-calender">
             <NavBar username={this.state.user} />
-            <Schedule username={this.state.user} email={this.state.email} />
+            {/* <Schedule username={this.state.user} email={this.state.email} /> */}
           </div>
-          \<br></br>
+          {/* \<br></br>
           <div>
             <Log username={this.state.user} email={this.state.email} />
-          </div>
+          </div> */}
         </React.StrictMode>
       </div>
     ) : (
