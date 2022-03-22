@@ -227,7 +227,8 @@ class Log extends Component {
         if (hr === 0) hr = 17;
         else hr -= 7;
         str = hr.toString() + str;
-        let d = new Date(resData[i]).getTime();
+        let d = new Date(resData[i].substring(0,19) + "Z").getTime();
+        
 
         if (d < 1647356400000) str = "Mon" + str;
         else if (d < 1647442800000) str = "Tue" + str;
