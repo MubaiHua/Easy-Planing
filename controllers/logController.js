@@ -59,16 +59,16 @@ exports.searchLog = async(req, res) =>{
     const {username, content, session} = req.body;
     let logs;
     let newContent = content;
-    if(content === "None")
+    if(content === "")
         newContent = "."
     try{
-        if(username === "None" && session === "xxxxxxxx"){
+        if(username === "" && session === "xxxxxxxx"){
             logs = await Log.find({content:{$regex: newContent, $options: 'is'}})
             res.status(201).json({
                 logs: logs
             })
         }
-        else if(username === "None"){
+        else if(username === ""){
             logs = await Log.find({content:{$regex: newContent, $options: 'is'}, session: session})
             res.status(201).json({
                 logs: logs
