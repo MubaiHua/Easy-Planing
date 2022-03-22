@@ -1,5 +1,8 @@
 # GIRS-Calender
-### Set Up
+### Demo
+https://girs-calender-app.herokuapp.com/
+
+### Set Up Locally
 ```
 git clone https://github.com/MubaiHua/GIRS-Calender.git
 ```
