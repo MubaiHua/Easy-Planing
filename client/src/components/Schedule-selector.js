@@ -40,7 +40,7 @@ export default class Schedule extends React.Component {
           if (!new_all_entries.includes(avails[j])) {
             new_all_entries.push(avails[j]);
           }
-          let date = new Date(avails[j].substring(0,19) + "Z").getTime();
+          let date = Date.parse(avails[j]);
           let users =
             newCollection.get(date) !== undefined
               ? newCollection.get(date)
