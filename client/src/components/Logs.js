@@ -97,11 +97,7 @@ class Log extends Component {
             const config = { headers: { "Content-Type": "application/json" } };
             const body = { _id: obj_id };
             try {
-              await axios.post(
-                "http://localhost:5000/api/logRoutes/deleteLog",
-                body,
-                config
-              );
+              await axios.post("api/logRoutes/deleteLog", body, config);
               window.location.reload();
             } catch (err) {
               console.log(err);
