@@ -199,7 +199,7 @@ export default class Schedule extends React.Component {
             hourlyChunks={2}
             timeFormat={"hh:mm A"}
             dateFormat={"ddd"}
-            startDate={"3-14-2022"}
+            startDate={"2022-03-14"}
             onChange={this.handleChange}
             renderDateCell={this.renderDateCell}
           />

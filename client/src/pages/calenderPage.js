@@ -39,7 +39,7 @@ export default class calenderPage extends Component {
         <React.StrictMode>
           <div className="auth-calender">
             <NavBar username={this.state.user} />
-            {/* <Schedule username={this.state.user} email={this.state.email} /> */}
+            <Schedule username={this.state.user} email={this.state.email} />
           </div>
           \<br></br>
           <div>
